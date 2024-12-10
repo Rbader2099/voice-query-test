@@ -37,11 +37,27 @@
             };
 
             recognition.onerror = function (event) {
-                document.getElementById('response').innerText = `Speech recognition error: ${event.error}`;
+                let errorMessage = '';
+                switch (event.error) {
+                    case 'aborted':
+                        errorMessage = 'Speech recognition aborted. Please try again.';
+                        break;
+                    case 'no-speech':
+                        errorMessage = 'No speech detected. Please speak into the microphone.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = 'No microphone detected. Please check your microphone settings.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = 'Microphone access denied. Please allow microphone access.';
+                        break;
+                    default:
+                        errorMessage = `Speech recognition error: ${event.error}`;
+                }
+                document.getElementById('response').innerText = errorMessage;
                 console.error('Speech recognition error:', event.error);
             };
         }
     </script>
 </body>
 </html>
-
